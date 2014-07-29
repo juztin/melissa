@@ -1,0 +1,11 @@
+# use glob syntax
+syntax: glob
+
+# wildcard
+*.swp
+*.swo
+*~
+
+# specific
+.DS_Store
+
