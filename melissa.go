@@ -160,6 +160,7 @@ func (c Client) Ping() error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("invalid response code, %d, received for ping", resp.StatusCode)
 	}
@@ -167,7 +168,7 @@ func (c Client) Ping() error {
 }
 
 // Query invokes a JSON request to Melissa data using the given `qs` url.Values
-// as the query params. A populated Response object is returned only when there are now errors.
+// as the query params. A populated Response object is returned only when there are no errors.
 func (c Client) Query(qs url.Values) (Response, error) {
 	var r Response
 	// Gets the query-string, excluding empty values from the address.
@@ -191,8 +192,6 @@ func (c Client) Query(qs url.Values) (Response, error) {
 	if err != nil {
 		return r, err
 	}
-
-	//fmt.Println("----------\n", string(data), "\n----------")
 
 	// Read and transform data.
 	err = json.Unmarshal(data, &r)
